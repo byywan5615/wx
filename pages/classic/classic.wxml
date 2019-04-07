@@ -1,0 +1,10 @@
+<view class="container">
+<view class="header">
+  <c-epsoide class="epsoide" index="{{classicData.index}}"></c-epsoide>
+  <c-like class="like" bind:like="onLike" like="{{likeStatus}}" count="{{likeCount}}"></c-like>
+</view>
+  <c-movie hidden="{{classicData.type!=100}}" img="{{classicData.image}}" content="{{classicData.content}}"></c-movie>
+  <c-music wx:if="{{classicData.type == 200}}" img="{{classicData.image}}" content="{{classicData.content}}" src="{{classicData.url}}" title="{{classicData.title}}"></c-music>
+  <c-essay hidden="{{classicData.type!=300}}" img="{{classicData.image}}" content="{{classicData.content}}"></c-essay>
+  <c-navi class="navi" bind:left="onNext" bind:right="onPrevious" title="{{classicData.title}}" latest="{{latest}}" first="{{first}}"></c-navi>
+</view>

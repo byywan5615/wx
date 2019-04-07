@@ -1,0 +1,30 @@
+var format = function(text){
+  if(!text){
+    return
+  }
+  var reg = getRegExp('\\\\n','g')
+  return text.replace(reg, '\n&nbsp;&nbsp;')
+}
+
+var limit = function(array,length){
+  return array.slice(0,length)
+}
+
+var indent = function(index){
+  return index == 0 ? 'ex-tag1' : '' || index == 1 ? 'ex-tag2' : ''
+}
+
+var trueOrFalse = function(comments){
+  if(comments){
+    return true
+  }else{
+    return false
+  }
+}
+
+module.exports = {
+  format: format,
+  indent: indent,
+  limit: limit,
+  trueOrFalse: trueOrFalse
+}
