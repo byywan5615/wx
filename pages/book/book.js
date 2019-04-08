@@ -2,7 +2,7 @@
 import {
   BookModel
 } from '../../models/book.js'
-
+import {random} from '../../util/common.js'
 const bookModel = new BookModel()
 
 Page({
@@ -11,7 +11,9 @@ Page({
    */
   data: {
     books:[],
-    searching:false
+    searching:false,
+    hotWords:[],
+    more:String
   },
 
   /**
@@ -26,17 +28,15 @@ Page({
         }) 
       }
     )
-  },
-  onSearching(event){
-    this.setData({
-      searching:true
+
+    bookModel.getHot().then(res => {
+      this.setData({
+        hotWords: res.hot
+      })
     })
+
   },
-  onCancel(){
-    this.setData({
-      searching: false
-    })
-  },
+  
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -84,5 +84,23 @@ Page({
    */
   onShareAppMessage: function() {
 
+  },
+
+  onSearching(event) {
+    this.setData({
+      searching: true
+    })
+  },
+  onCancel() {
+    this.setData({
+      searching: false
+    })
+  },
+
+  onReachBottom(){
+   this.setData({
+     more:random(16)
+   })
   }
+
 })

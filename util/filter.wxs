@@ -15,7 +15,8 @@ var indent = function(index){
 }
 
 var trueOrFalse = function(comments){
-  if(comments){
+  // console.log(comments)
+  if(comments.length>0){
     return true
   }else{
     return false

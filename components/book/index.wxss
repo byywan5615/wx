@@ -1,6 +1,7 @@
 /* components/book/index.wxss */
 .container{
   margin-top: 30rpx;
+  margin-bottom: 10rpx;
   display: flex;
   position: relative;
   box-shadow: 2px 2px 3px #e3e3e3;
