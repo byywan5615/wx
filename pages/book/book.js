@@ -13,7 +13,8 @@ Page({
     books:[],
     searching:false,
     hotWords:[],
-    more:String
+    more:String,
+    showLike:true
   },
 
   /**

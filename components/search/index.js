@@ -6,6 +6,9 @@ import {
   BookModel
 } from '../../models/book.js'
 
+import {
+  paginationBev
+} from '../behaviors/pagination.js'
 
 
 const kewordModel = new KeywordModel()
@@ -14,11 +17,12 @@ Component({
   /**
    * 组件的属性列表
    */
+  behaviors: [paginationBev],
   properties: {
     hotWords: Array,
     more: {
       type: String,
-      observer:"_load_more"
+      observer: "loadMore"
     }
   },
 
@@ -28,10 +32,11 @@ Component({
   data: {
     historyWords: [],
     // hotWords:[]
-    dataArray: [],
     searching: false,
-    q:'',
-    loading:false
+    q: '',
+    loading: false,
+    loadingCenter:false,
+    showLike:false
   },
   attached() {
     this.setData({
@@ -47,47 +52,80 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    _load_more() {
-      console.log(122)
-      if(!this.data.q){
+    loadMore() {
+      if (!this.data.q) {
         return
       }
-      if(this.data.loading){
+      if (this.isLocked()) {
         return
       }
-      const length = this.data.dataArray.length
-      this.data.loading = true
-      bookModel.search(length,this.data.q)
-      .then(res=>{
-        const tempArray = this.data.dataArray.concat(res.books)
-        this.setData({
-          dataArray:tempArray,
-         
-        })
-        this.data.loading = false
-      })
+      if (this.hasMore()) {
+        this.locked()
+        bookModel.search(this.getCurrentStart(), this.data.q)
+          .then(res => {
+            this.setMoreData(res.books)
+            this.unLocked()
+          },()=>{
+            this.unLocked()
+          })
+      }
     },
-    onCancel() {
+
+    onCancel(event) {
+      this.initialize()
       this.triggerEvent('cancel', {}, {})
     },
 
     onConfirm(event) {
-      this.setData({
-        searching: true
-      })
+      this._showResult()
+      this._showLoadingCenter()
       const q = event.detail.value || event.detail.text
-      bookModel.search(0,q)
+      if(q == undefined){
+        this.setData({
+          noneResult:true,
+          loadingCenter:false
+        })
+        return
+      }
+      this.setData({
+          q: q
+      })
+      bookModel.search(0, q)
         .then(res => {
-          this.setData({
-            dataArray: res.books,
-            q
-          })
+          this.setMoreData(res.books)
+          this.setTotal(res.total)
           kewordModel.addToHistory(q)
+          this.hideLoadingCenter()
         })
     },
     onDelete(event) {
+      this._closeResult()
+      this.initialize()
+    },
+
+
+ 
+    _showResult() {
       this.setData({
-        searching: false
+        searching: true
+      })
+    },
+    _closeResult(){
+      this.setData({
+        searching: false,
+        q:''
+
+      })
+    },
+   
+    _showLoadingCenter(){
+      this.setData({
+        loadingCenter:true
+      })
+    },
+    hideLoadingCenter(){
+      this.setData({
+        loadingCenter: false
       })
     }
   }

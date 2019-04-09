@@ -57,6 +57,13 @@ class ClassicModel extends HTTP {
     return latestIndex == index ? true : false
   }
 
+  getMyFavor(success){
+    const params = {
+      url:'classic/favor',
+      success:success
+    }
+    this.request(params)
+  }
 
 
   //将属性名为latest 值为index的最后的数据存入storage中

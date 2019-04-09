@@ -1,30 +1,63 @@
-const paginationBev = behavior({
-  data:{
+const paginationBev = Behavior({
+  data: {
     dataArray: [],
-    total:0
+    total: null,
+    noneResult:false,
+    loading:false
   },
-  methods:{
+
+  methods: {
     setMoreData(dataArray) {
       const temArray = this.data.dataArray.concat(dataArray)
       this.setData({
-        dataArray:temArray
+        dataArray: temArray
       })
     },
 
-    getCurrentStart(){
+    getCurrentStart() {
       return this.data.dataArray.length
     },
-    setTotal(total){
+
+    setTotal(total) {
       this.data.total = total
+      if(total == 0){
+        this.setData({
+          noneResult: true
+        })
+      }
     },
 
-    hasMore(){
-      if(this.data.dataArray.length >= this.data.total){
+    hasMore() {
+      if (this.data.dataArray.length >= this.data.total) {
         return false
-      }else{
+      } else {
         return true
       }
-    }
+    },
+    initialize(){
+      this.setData({
+        dataArray:[],
+        noneResult: false,
+        loading:false
+      })
+      this.data.total = null
+    },
+
+    locked() {
+      this.setData({
+        loading: true
+      })
+    },
+
+    unLocked() {
+      this.setData({
+        loading: false
+      })
+    },
+
+    isLocked() {
+      return this.data.loading ? true : false
+    },
   }
 })
 

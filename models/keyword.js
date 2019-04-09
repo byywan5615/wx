@@ -6,9 +6,9 @@ class KeywordModel extends HTTP{
     const words = wx.getStorageSync(this.key)  
     if(!words){
       return []
-    }else{
-      return words
     }
+      return words
+
      
   }
 
@@ -16,9 +16,10 @@ class KeywordModel extends HTTP{
   addToHistory(keyword){
     let words = this.getHistory()
     const has = words.includes(keyword)
-    if(!has){
+    if (!has) {
+      // 数组末尾 删除 ， keyword 数组第一位
       const length = words.length
-      if(length>=this.maxLength){
+      if (length >= this.maxLength) {
         words.pop()
       }
       words.unshift(keyword)

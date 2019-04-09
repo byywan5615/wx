@@ -1,8 +1,13 @@
 <view class="container">
-<view class="header">
-  <c-epsoide class="epsoide" index="{{classicData.index}}"></c-epsoide>
-  <c-like class="like" bind:like="onLike" like="{{likeStatus}}" count="{{likeCount}}"></c-like>
-</view>
+  <view class="header">
+    <c-epsoide class="epsoide" index="{{classicData.index}}"></c-epsoide>
+    <view class="like-container">
+      <c-like class="like" bind:like="onLike" like="{{likeStatus}}" count="{{likeCount}}"></c-like>
+      <c-button class="share-btn" open-type="share">
+        <image class="share" src="/images/icon/share.png" slot="img"></image>
+      </c-button>
+    </view>
+  </view>
   <c-movie hidden="{{classicData.type!=100}}" img="{{classicData.image}}" content="{{classicData.content}}"></c-movie>
   <c-music wx:if="{{classicData.type == 200}}" img="{{classicData.image}}" content="{{classicData.content}}" src="{{classicData.url}}" title="{{classicData.title}}"></c-music>
   <c-essay hidden="{{classicData.type!=300}}" img="{{classicData.image}}" content="{{classicData.content}}"></c-essay>
